@@ -13,7 +13,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
 
 const router = express.Router()
 
-router.get('/restaurants', requireToken, (req, res) => {
+router.get('/restaurants', (req, res) => {
   Restaurant.find()
     .then(restaurants => {
       return restaurants.map(restaurant => restaurant.toObject())
@@ -22,7 +22,7 @@ router.get('/restaurants', requireToken, (req, res) => {
     .catch(err => handle(err, res))
 })
 
-router.get('/restaurants/:id', requireToken, (req, res) => {
+router.get('/restaurants/:id', (req, res) => {
   Restaurant.findById(req.params.id)
     .then(handle404)
     .then(restaurant => res.status(200).json({ restaurant: restaurant.toObject() }))

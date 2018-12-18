@@ -7,17 +7,21 @@ const ratingSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: false
+    required: true
+  },
+  comment: {
+    type: String,
+    required: true
   },
   restaurant: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Restaurant',
-    required: false
+    required: true
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: false
+    required: true
   }
 },
 {

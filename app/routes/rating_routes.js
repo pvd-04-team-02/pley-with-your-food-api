@@ -3,6 +3,7 @@ const passport = require('passport')
 
 const Rating = require('../models/rating')
 const Restaurant = require('../models/restaurant.js')
+const User = require('../models/user')
 
 const handle = require('../../lib/error_handler')
 const customErrors = require('../../lib/custom_errors')
@@ -34,62 +35,50 @@ router.get('/ratings/:id', (req, res) => {
 router.post('/ratings', requireToken, (req, res) => {
   req.body.rating.owner = req.user.id
 
-  Restaurant.findById(req.body.rating.restaurant)
-    .then(function (restaurant) {
-      const restOwner = restaurant.owner
-        // console.log('User ID:             ' + req.body.rating.owner)
-        // console.log('Restaurant Owner ID: ' + restOwner)
-        if (restOwner == req.body.rating.owner) {
-          console.log('print error')
-        } else {
-          Rating.create(req.body.rating)
+  User.findOne({ id: req.body.rating.owner })
+    .then(function (user) {
+      const isOwner = req.user.owner
+      if (isOwner == true) {
+        console.log('print error')
+      } else {
+        Rating.create(req.body.rating)
           .then(rating => {
             res.status(201).json({ rating: rating.toObject() })
           })
-          .catch(err => handle(err, res)) 
-        }
+          .catch(err => handle(err, res))
       }
-    )
+    })
   })
 
-  // if (restOwner === req.body.rating.owner) {
-  //   console.log('matching')
-  // } else {
-  //   Rating.create(req.body.rating)
-  //   .then(rating => {
-  //     res.status(201).json({ rating: rating.toObject() })
-  //   })
-  //   .catch(err => handle(err, res))
-
-router.patch('/ratings/:id', requireToken, (req, res) => {
-  delete req.body.rating.owner
-
-  Rating.findById(req.params.id)
-    .then(handle404)
-    .then(rating => {
-      requireOwnership(req, rating)
-
-      Object.keys(req.body.rating).forEach(key => {
-        if (req.body.rating[key] === '') {
-          delete req.body.rating[key]
-        }
+  router.patch('/ratings/:id', requireToken, (req, res) => {
+    delete req.body.rating.owner
+  
+    Rating.findById(req.params.id)
+      .then(handle404)
+      .then(rating => {
+        requireOwnership(req, rating)
+  
+        Object.keys(req.body.rating).forEach(key => {
+          if (req.body.rating[key] === '') {
+            delete req.body.rating[key]
+          }
+        })
+  
+        return rating.update(req.body.rating)
       })
-
-      return rating.update(req.body.rating)
-    })
-    .then(() => res.sendStatus(204))
-    .catch(err => handle(err, res))
-})
-
-router.delete('/ratings/:id', requireToken, (req, res) => {
-  Rating.findById(req.params.id)
-    .then(handle404)
-    .then(rating => {
-      requireOwnership(req, rating)
-      rating.remove()
-    })
-    .then(() => res.sendStatus(204))
-    .catch(err => handle(err, res))
-})
+      .then(() => res.sendStatus(204))
+      .catch(err => handle(err, res))
+  })
+  
+  router.delete('/ratings/:id', requireToken, (req, res) => {
+    Rating.findById(req.params.id)
+      .then(handle404)
+      .then(rating => {
+        requireOwnership(req, rating)
+        rating.remove()
+      })
+      .then(() => res.sendStatus(204))
+      .catch(err => handle(err, res))
+  })
 
 module.exports = router

@@ -2,6 +2,7 @@ const express = require('express')
 const passport = require('passport')
 
 const Restaurant = require('../models/restaurant')
+const User = require('../models/user')
 
 const handle = require('../../lib/error_handler')
 const customErrors = require('../../lib/custom_errors')
@@ -32,11 +33,19 @@ router.get('/restaurants/:id', (req, res) => {
 router.post('/restaurants', requireToken, (req, res) => {
   req.body.restaurant.owner = req.user.id
 
-  Restaurant.create(req.body.restaurant)
-    .then(restaurant => {
-      res.status(201).json({ restaurant: restaurant.toObject() })
-    })
-    .catch(err => handle(err, res))
+  User.findOne({ id: req.body.restaurant.owner })
+    .then(function (user) {
+      const isOwner = req.user.owner
+      if (isOwner == false) {
+        console.log('print error')
+      } else {
+        Restaurant.create(req.body.restaurant)
+        .then(restaurant => {
+          res.status(201).json({ restaurant: restaurant.toObject() })
+        })
+        .catch(err => handle(err, res))
+      }
+  })
 })
 
 router.patch('/restaurants/:id', requireToken, (req, res) => {

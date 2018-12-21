@@ -2,6 +2,10 @@
   "name": "express-api-template",
   "version": "0.0.1",
   "description": "",
+  "engines": {
+    "node": "v8.9.1",
+    "npm": "6.5.0"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node server.js",

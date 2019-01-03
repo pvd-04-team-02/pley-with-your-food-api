@@ -39,23 +39,40 @@ A user has many reviews, and a restaurant has many reviews. In this case, Rating
 Our biggest issues when dealing with the backend was determining which parameters to pass it when calling our API. We also had to rewrite our restaurant_routes in order to make sure that the user that was editing the restaurant actually owned it.
 
 Restaurant Routes:
+<br>
 -GET (all): '/restaurants'
+<br>
 -GET (one): '/restaurants/:id'
+<br>
 -POST: '/restaurants'
+<br>
 -PATCH: '/restaurants/:id'
+<br>
 -DELETE: '/restaurants/:id'
+<br>
 
 Rating Routes:
+<br>
 -GET (all): '/ratings'
+<br>
 -GET (one): '/ratings/:id'
+<br>
 -POST: '/ratings'
+<br>
 -PATCH: '/ratings/:id'
+<br>
 -DELETE: '/ratings/:id'
+<br>
 
 User Routes:
+<br>
 -POST: '/sign-up'
+<br>
 -POST: '/sign-in'
+<br>
 -PATCH: '/change-password'
+<br>
 -DELETE: '/sign-out'
+<br>
 
 <a href="https://imgur.com/Qprn46g"><img src="https://i.imgur.com/Qprn46g.jpg" title="source: imgur.com" />Entity Relationship Diagram</a>

@@ -38,4 +38,24 @@ A user has many reviews, and a restaurant has many reviews. In this case, Rating
 
 Our biggest issues when dealing with the backend was determining which parameters to pass it when calling our API. We also had to rewrite our restaurant_routes in order to make sure that the user that was editing the restaurant actually owned it.
 
-<a href="https://www.lucidchart.com/documents/edit/8734b200-f4d8-45b9-82d4-aace92fe9a52/0?shared=true&">Entity Relationship Diagram</a>
+Restaurant Routes:
+-GET (all): '/restaurants'
+-GET (one): '/restaurants/:id'
+-POST: '/restaurants'
+-PATCH: '/restaurants/:id'
+-DELETE: '/restaurants/:id'
+
+Rating Routes:
+-GET (all): '/ratings'
+-GET (one): '/ratings/:id'
+-POST: '/ratings'
+-PATCH: '/ratings/:id'
+-DELETE: '/ratings/:id'
+
+User Routes:
+-POST: '/sign-up'
+-POST: '/sign-in'
+-PATCH: '/change-password'
+-DELETE: '/sign-out'
+
+<a href="https://imgur.com/Qprn46g"><img src="https://i.imgur.com/Qprn46g.jpg" title="source: imgur.com" />Entity Relationship Diagram</a>

@@ -48,25 +48,18 @@ router.post("/ratings", requireToken, (req, res) => {
     } else {
       console.log("checkpoint 1");
       // findOne(restaurant name... convert into a restaurant ID)
-      console.log("req.body.rating.name " + req.body.rating.name);
+      console.log("before findOne promise... name: " + req.body.rating.name);
       Restaurant.findOne({ name: req.body.rating.name })
-        // console.log('checkpoint 2')
-        // console.log('req.body.rating.name ' + req.body.rating.name)
-        .then(function(restaurant) {
-          console.log("checkpoint 3");
-          //rating.create from there
-          console.log(restaurant);
-          return restaurant;
-        })
-        .then(function(restaurant) {
-          console.log("getting into rating.create");
+        .then(restaurantFound => {
+          console.log('restaurantFound: ' + restaurantFound)
+          if (!restaurantFound) { return res.status(404).end() }
+          console.log('req.body.rating: ' + req.body.rating)
           return Rating.create(req.body.rating);
         })
         .then(rating => {
           res.status(201).json({ rating: rating.toObject() })
         })
         .catch(err => handle(err, res));
-      // )
     }
   });
 });

@@ -8,10 +8,6 @@ const ratingSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  address: {
-    type: String,
-    required: true
-  },
   comment: {
     type: String,
     required: true
